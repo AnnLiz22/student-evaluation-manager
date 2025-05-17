@@ -1,6 +1,8 @@
 package org.example;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class StudentEvaluationManager {
 
@@ -19,6 +21,10 @@ public void evaluateStudentActivity(List<Student>students){
           + student.getYearOfStudies() + " : grade average is too low or student does not have enough grades. " + student.hasSufficientGrades());
     }
   }
+}
 
+public Map<Double, List<Student>> getStudentsByWeightedAverage(List<Student>students){
+ return students.stream()
+      .collect(Collectors.groupingBy(Student::calculateWeightedAverage));
 }
 }
