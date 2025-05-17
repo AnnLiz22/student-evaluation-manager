@@ -11,6 +11,10 @@ public class Student {
   private int numOfAbsences;
   List<Grade> grades = new ArrayList<>();
 
+  public Student(String name) {
+    this.name = name;
+  }
+
   public Student(String name, String surname, int yearOfStudies, int numOfAbsences) {
     this.name = name;
     this.surname = surname;
@@ -23,16 +27,18 @@ public class Student {
   }
 
   public double calculateAverage() {
-    double average = grades.stream()
+   return grades.stream()
         .mapToDouble(Grade::getGrade)
         .average()
         .orElseThrow(() -> new RuntimeException("Not possible to get average."));
-    return average;
   }
 
   public double calculateWeightedAverage() {
     double totalWeightedGrades = 0;
     double totalWeight = 0;
+
+    if(!hasSufficientGrades())
+      return 0.0;
 
     for (Grade grade : grades) {
       double weight = grade.getWeight();
@@ -46,16 +52,15 @@ public class Student {
     public boolean hasSufficientGrades() {
 
       if (grades.size() <= 3) {
-        throw new RuntimeException("Not sufficient number of grades for effectuate evaluation");
+        return false;
+     //   throw new RuntimeException("Not sufficient number of grades for effectuate evaluation");
       }
       return true;
     }
 
     public boolean hasSufficientPresence(){
-     if(numOfAbsences <= 2) return true;
-     return false;
+      return numOfAbsences <= 2;
     }
-
 
     public String getName () {
       return name;
